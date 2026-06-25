@@ -21,4 +21,12 @@ class TestOrderCreation:
         assert response.status_code == 200, f"Ожидаемый статус код 200, но получили {response.status_code}"
         assert response.json()["success"] is True
 
-    
+
+    @allure.title("Успешное создание заказа неавторизованным пользователем")
+    def test_create_order_not_authorized(self, ingredients):
+        order_data = generate_order_data(ingredients)
+        response = OrderMethods.create_order("", order_data)
+        
+        assert response.status_code == 200, f"Ожидаемый статус код 200, но получили {response.status_code}"
+        assert response.json()["success"] is True
+
