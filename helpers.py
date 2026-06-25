@@ -13,3 +13,8 @@ def generate_user_create_data():
     
     return data
 
+
+# Метод собирает значения поля _id каждого ингредиента в новый список и выбирает 3 уникальных идентификаторов из полученного списка.
+def generate_order_data(ingredients, count=3):
+    return sample([ing['_id'] for ing in ingredients], count)
+
