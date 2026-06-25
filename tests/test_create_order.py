@@ -30,3 +30,10 @@ class TestOrderCreation:
         assert response.status_code == 200, f"Ожидаемый статус код 200, но получили {response.status_code}"
         assert response.json()["success"] is True
 
+
+    @allure.title("Создание заказа без ингредиентов")
+    def test_create_order_without_ingredients(self):
+        response = OrderMethods.create_order("", [])
+        
+        assert response.status_code == 400, f"Ожидаемый статус код 400, но получили {response.status_code}"
+        assert NO_INGREDIENTS in response.json()["message"]
