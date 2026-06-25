@@ -28,3 +28,21 @@ class TestCreateUser:
         assert response2.status_code == 403, f"Ожидаемый статус код 403, но получили {response2.status_code}" 
         assert response2.json()["message"] == USER_ALREADY_EXISTS
 
+
+    @pytest.mark.parametrize("key,value", [
+        ("email", ""),
+        ("password", ""),
+        ("name", "")
+        ])
+    @allure.title("Проверка, что все обязательные поля должны быть переданы")
+    @allure.description("Тест проверяет, что для создания нового пользователя необходимо передать все обязательные поля")
+    def test_cannot_create_user_without_required_field(self, key, value):
+        user_data = generate_user_create_data()
+        user_data[key] = value
+
+        with allure.step(f"Попытка создания курьера с незаполненным полем: {key}"):
+            response = UserMethods.create_user(user_data)
+        assert response.status_code == 403, f"Ожидаемый статус код 403, но получили {response.status_code}"
+        assert NOT_ENOUGH_CREATE_DATA in response.json()["message"]
+
+        
