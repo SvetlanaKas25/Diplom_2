@@ -1,24 +1,19 @@
-import allure
 import pytest
+import allure
 
-from api_methods.order_methods import OrderMethods
-from api_methods.auth_methods import AuthMethods
-from helpers import generate_order_data
-from messages import NO_INGREDIENTS
+from messages import USER_ALREADY_EXISTS, NOT_ENOUGH_CREATE_DATA
+from api_methods.user_methods import UserMethods
+from helpers import generate_user_create_data
 
 
 
-@allure.feature("Создание заказа")
-class TestOrderCreation:
+class TestCreateUser:
 
-    @allure.title("Успешное создание заказа авторизованным пользователем")
-    def test_create_order_authorized(self, new_user, ingredients):
-        login_pass = new_user
-        order_data = generate_order_data(ingredients)
-        token = AuthMethods.auth_token(login_pass)
-        response = OrderMethods.create_order(token, order_data)
-        
+    @allure.title("Создание пользователя")
+    @allure.description("Тест проверяет, что можно создать пользователя  с корректными данными")
+    def test_create_user_success(self, create_data_user):
+        user_data = create_data_user
+        response = UserMethods.create_user(user_data)
         assert response.status_code == 200, f"Ожидаемый статус код 200, но получили {response.status_code}"
         assert response.json()["success"] is True
 
-    
