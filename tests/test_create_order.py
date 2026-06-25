@@ -37,3 +37,13 @@ class TestOrderCreation:
         
         assert response.status_code == 400, f"Ожидаемый статус код 400, но получили {response.status_code}"
         assert NO_INGREDIENTS in response.json()["message"]
+
+
+    @allure.title("Создание заказа с неверным хешем ингредиентов")
+    def test_create_order_with_invalid_hash_ingridient(self):
+        wrong_hash = ["wronghash1", "wronghash2"]
+        response = OrderMethods.create_order("", wrong_hash)
+        
+        assert response.status_code == 500, f"Ожидаемый статус код 500, но получили {response.status_code}"
+        
+        
