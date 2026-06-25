@@ -36,3 +36,11 @@ def new_user():
     token = AuthMethods.auth_token(login_pass)
     UserMethods.delete_user(token)
     
+    
+@pytest.fixture
+def ingredients():
+    with allure.step("Получение списка ингредиентов"):
+        response = OrderMethods.get_ingredients()
+        return response.json()['data']
+    
+    
